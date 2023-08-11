@@ -105,6 +105,7 @@ class MainActivity : AppCompatActivity() {
             "HomeDetailFragment"->{
                 transaction.replace(R.id.fragment_container, HomeDetailFragment(), "HomeDetailFragment")
                 binding.floatingActionButton.hide()
+                mainActivity.setBottomNavigationVisibility(View.GONE)
             }
             "CommunityFragment"->{
                 transaction.replace(R.id.fragment_container, CommunityFragment(), "CommunityFragment")

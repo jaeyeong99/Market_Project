@@ -33,9 +33,17 @@ open class HomeAdapter(private val homeDataList: List<HomeData>): RecyclerView.A
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = HomeViewHolder(
         ItemHomeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
     )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+        //item click listener
+        holder.itemView.setOnClickListener {
+            itemClickListener.onItemClick(it, position)
+        }
+
+
         //뷰에 데이터 출력
         val binding = (holder as HomeViewHolder).binding
 
