@@ -40,13 +40,7 @@ import java.util.logging.Logger
 class WriteFragment : Fragment() {
 
     private lateinit var binding: FragmentWriteBinding
-    private lateinit var homeFragment: HomeFragment
     private lateinit var mainActivity: MainActivity
-
-    private var homeData: MutableList<HomeData> = mutableListOf()
-    private val viewModel: HomeViewModel by activityViewModels()
-    private lateinit var imageView: ImageView
-
     private lateinit var storage: FirebaseStorage
 
     var savedImageUri: Uri? = null
@@ -69,7 +63,6 @@ class WriteFragment : Fragment() {
 
     private fun init(){
         mainActivity = activity as MainActivity
-        homeFragment = HomeFragment()
     }
 
     private fun clickListener(){
@@ -100,6 +93,7 @@ class WriteFragment : Fragment() {
     }
 
     private fun successWrite() {
+        var storageUrl = "gs://marketproject-29c48.appspot.com"
         var fileName = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
         val userId = mainActivity.auth?.currentUser?.uid.orEmpty() // null일시 빈값으로 변경
         val currentDB = Firebase.database.reference.child("salesPost").child(fileName)
@@ -112,15 +106,14 @@ class WriteFragment : Fragment() {
         postInfoMap["title"] = title
         postInfoMap["price"] = price
         postInfoMap["description"] = description
-        //postInfoMap["imageUri"] = savedImageUri.toString()
         postInfoMap["timeStamp"] = timeStamp
         currentDB.updateChildren(postInfoMap)
 
 
-        storage = FirebaseStorage.getInstance("gs://marketproject-29c48.appspot.com")
+        storage = FirebaseStorage.getInstance(storageUrl)
         if (savedImageUri != null) {
 
-            storage.reference.child("salesPostImage").child("${fileName}.jpg")
+            storage.reference.child("salesPostImage").child("${fileName}")
                 .putFile(savedImageUri!!)
         }
 

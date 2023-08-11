@@ -1,5 +1,6 @@
 package com.example.marketproject.fragment
 
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
@@ -24,8 +25,6 @@ class HomeFragment : Fragment() {
     private lateinit var mainActivity: MainActivity
 
     private val homeDataList = mutableListOf<HomeData>()
-    private val viewModel: HomeViewModel by activityViewModels()
-    private var homeData: MutableList<HomeData> = mutableListOf()
 
     private lateinit var database: FirebaseDatabase
     private lateinit var databaseRef: DatabaseReference
@@ -38,16 +37,14 @@ class HomeFragment : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
-        init()
-        clickListener()
-
         homeAdapter = HomeAdapter(homeDataList)
         binding.homeRecyclerView.adapter = homeAdapter
         binding.homeRecyclerView.layoutManager = createLayoutManager()
 
-        mainActivity.setBottomNavigationVisibility(View.VISIBLE)
 
 
+        init()
+        clickListener()
         addHomeData()
 
 
@@ -57,10 +54,18 @@ class HomeFragment : Fragment() {
 
     private fun init(){
         mainActivity = activity as MainActivity
+        mainActivity.setBottomNavigationVisibility(View.VISIBLE)
     }
 
     private fun clickListener(){
+        homeAdapter.setItemClickListener(object: HomeAdapter.OnItemClickListener {
+            override fun onItemClick(v: View, position: Int) {
+                Log.d(TAG, "onItemClick: $position")
+                mainActivity.setFragment("HomeDetailFragment")
 
+
+            }
+        })
 
     }
 
@@ -73,41 +78,20 @@ class HomeFragment : Fragment() {
 
 
     private fun addHomeData() {
-
-//        homeData = viewModel.getData()
-//
-//        for (data in homeData) {
-//            homeDataList.add(HomeData(data.id, data.title, data.price, data.description, data.imageUri))
-//        }
-
-
-
-        val userId = mainActivity.auth?.currentUser?.uid.orEmpty()
-
-
         database = FirebaseDatabase.getInstance()
         databaseRef = database.getReference("salesPost")
 
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-
                 for (post in snapshot.children){
                     if (snapshot.exists()) {
-
-                        val id = post.child("id").getValue(String::class.java)
-                        val title = post.child("title").getValue(String::class.java)
-                        val price = post.child("price").getValue(String::class.java)
-                        val description = post.child("description").getValue(String::class.java)
-                        val timeStamp = post.child("timeStamp").getValue(String::class.java)
-
-                        val imageUri = snapshot.child("imageUri").getValue(String::class.java)?.toUri()
-                        Log.d(TAG, id + title + price + description + timeStamp+ " 이거")
-
+                        val id = post.child("id").getValue(String::class.java)!!
+                        val title = post.child("title").getValue(String::class.java)!!
+                        val price = post.child("price").getValue(String::class.java)!!
+                        val description = post.child("description").getValue(String::class.java)!!
+                        val timeStamp = post.child("timeStamp").getValue(String::class.java)!!
 
                         homeDataList.add(HomeData(id, title, price, description, timeStamp))
-
-                        //homeDataList.add(HomeData(id, title, price, description, imageUri))
-
                     }
                 }
 
@@ -119,8 +103,5 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun imageLoad() {
-
-    }
 
 }

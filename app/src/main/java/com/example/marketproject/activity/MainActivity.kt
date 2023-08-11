@@ -102,6 +102,10 @@ class MainActivity : AppCompatActivity() {
                 transaction.replace(R.id.fragment_container, HomeFragment(), "HomeFragment")
                 binding.floatingActionButton.show()
             }
+            "HomeDetailFragment"->{
+                transaction.replace(R.id.fragment_container, HomeDetailFragment(), "HomeDetailFragment")
+                binding.floatingActionButton.hide()
+            }
             "CommunityFragment"->{
                 transaction.replace(R.id.fragment_container, CommunityFragment(), "CommunityFragment")
                 binding.floatingActionButton.show()
@@ -119,6 +123,7 @@ class MainActivity : AppCompatActivity() {
                 mainActivity.setBottomNavigationVisibility(View.GONE)
                 binding.floatingActionButton.hide()
             }
+
         }
         transaction.commit()
     }

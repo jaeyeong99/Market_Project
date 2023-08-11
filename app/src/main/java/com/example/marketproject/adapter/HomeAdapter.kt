@@ -3,6 +3,7 @@ package com.example.marketproject.adapter
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marketproject.data.HomeData
@@ -16,6 +17,15 @@ import java.util.*
 import java.util.concurrent.TimeUnit.*
 
 open class HomeAdapter(private val homeDataList: List<HomeData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(v: View, position: Int)
+    }
+    private lateinit var itemClickListener : OnItemClickListener
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.itemClickListener = onItemClickListener
+
+    }
     override fun getItemCount(): Int {
         return homeDataList.size
 
@@ -30,12 +40,16 @@ open class HomeAdapter(private val homeDataList: List<HomeData>): RecyclerView.A
         val binding = (holder as HomeViewHolder).binding
 
         binding.tvTitle.text = homeDataList[position].title
-        binding.tvPrice.text = homeDataList[position].price + "원"
 
+
+        binding.tvPrice.text = addCommaToPrice(homeDataList[position].price) + "원"
+
+
+        var storageUrl = "gs://marketproject-29c48.appspot.com"
         val timeStamp = homeDataList[position].timeStamp
-        val storage: FirebaseStorage = FirebaseStorage.getInstance("gs://marketproject-29c48.appspot.com")
+        val storage: FirebaseStorage = FirebaseStorage.getInstance(storageUrl)
         val storageRef = storage.reference
-        val storagePath = storageRef.child("salesPostImage/$timeStamp.jpg")
+        val storagePath = storageRef.child("salesPostImage/$timeStamp")
 
         storagePath.downloadUrl.addOnSuccessListener { uri ->
             Glide.with(holder.itemView.context)
@@ -88,5 +102,15 @@ open class HomeAdapter(private val homeDataList: List<HomeData>): RecyclerView.A
             }
         }
         return value
+    }
+
+    fun addCommaToPrice(price: String): String {
+        val parts = price.split(".")
+        val integerPart = parts[0].toIntOrNull() ?: return price  // Return original price if not a valid number
+
+        val formattedIntegerPart = String.format("%,d", integerPart)
+        val decimalPart = if (parts.size > 1) ".${parts[1]}" else ""
+
+        return "$formattedIntegerPart$decimalPart"
     }
 }
