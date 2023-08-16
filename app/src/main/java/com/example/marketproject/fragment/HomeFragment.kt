@@ -11,6 +11,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.marketproject.R
 import com.example.marketproject.activity.MainActivity
 import com.example.marketproject.adapter.HomeAdapter
 import com.example.marketproject.data.HomeData
@@ -60,9 +61,48 @@ class HomeFragment : Fragment() {
     private fun clickListener(){
         homeAdapter.setItemClickListener(object: HomeAdapter.OnItemClickListener {
             override fun onItemClick(v: View, position: Int) {
-                Log.d(TAG, "onItemClick: $position")
-                mainActivity.setFragment("HomeDetailFragment")
 
+                val clickedHomeData = homeDataList[position] // Get the clicked HomeData
+                val databaseRef = database.getReference("salesPost").child(clickedHomeData.timeStamp)
+
+                databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            val title = snapshot.child("title").getValue(String::class.java)
+                            val price = snapshot.child("price").getValue(String::class.java)
+                            val description = snapshot.child("description").getValue(String::class.java)
+                            val timeStamp = snapshot.child("timeStamp").getValue(String::class.java)
+                            val id = snapshot.child("id").getValue(String::class.java)!!
+
+
+                            val userDatabaseRef = database.getReference("Users").child(id)
+                            userDatabaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    val nickName = snapshot.child("nickName").getValue(String::class.java)
+                                    val bundle = Bundle().apply {
+                                        putString("title", title)
+                                        putString("price", price)
+                                        putString("description", description)
+                                        putString("timeStamp", timeStamp)
+                                        putString("nickName", nickName)
+                                    }
+
+                                    mainActivity.openHomeDetailFragment(bundle)
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    Log.d(TAG, "Error fetching data: ${error.message}")
+                                }
+                            })
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d(TAG, "Error fetching data: ${error.message}")
+                    }
+                })
+
+                Log.d(TAG, "onItemClick: $position")
 
             }
         })

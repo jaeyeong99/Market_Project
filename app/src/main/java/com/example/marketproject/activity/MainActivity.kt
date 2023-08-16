@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     var auth : FirebaseAuth? = null
     var currentUser: FirebaseUser? = null
 
+    val homeDetailFragment = HomeDetailFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -103,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                 binding.floatingActionButton.show()
             }
             "HomeDetailFragment"->{
-                transaction.replace(R.id.fragment_container, HomeDetailFragment(), "HomeDetailFragment")
+                transaction.replace(R.id.fragment_container, homeDetailFragment, "HomeDetailFragment")
                 binding.floatingActionButton.hide()
                 mainActivity.setBottomNavigationVisibility(View.GONE)
             }
@@ -127,6 +129,14 @@ class MainActivity : AppCompatActivity() {
 
         }
         transaction.commit()
+    }
+
+    fun openHomeDetailFragment(bundle: Bundle){
+
+        homeDetailFragment.arguments = bundle
+        Log.d(TAG, "openHomeDetailFragment $bundle")
+        setFragment("HomeDetailFragment")
+
     }
 
     fun setBottomNavigationVisibility(visibility: Int) {

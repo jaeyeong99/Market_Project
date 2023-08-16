@@ -27,7 +27,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/ic_launcher_background" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/shape_round" />
 
             </LinearLayout>
 
@@ -55,6 +56,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_nickName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
@@ -84,13 +86,13 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="제목"
                     android:textStyle="bold"
                     android:textSize="20dp"
-                    android:layout_marginTop="20dp"
-                    />
+                    android:layout_marginTop="20dp" />
 
 
                 <LinearLayout
@@ -114,6 +116,7 @@
                         android:textSize="13dp"/>
 
                     <TextView
+                        android:id="@id/tv_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="시간"
@@ -123,6 +126,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="contents\n내용\ncnotents\n내용\ncontents\n내용\ncontents\n내용\ncontents\n내용\ncontents\n내용\ncontents\n내용\ncontents\n내용\ncontents\n내용"
@@ -134,7 +138,7 @@
         </LinearLayout>
 
     </ScrollView>
-
+  b
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -161,6 +165,7 @@
             android:background="@color/light_grey" />
 
         <TextView
+            android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="가격"

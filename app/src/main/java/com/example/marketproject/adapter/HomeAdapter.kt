@@ -48,10 +48,7 @@ open class HomeAdapter(private val homeDataList: List<HomeData>): RecyclerView.A
         val binding = (holder as HomeViewHolder).binding
 
         binding.tvTitle.text = homeDataList[position].title
-
-
         binding.tvPrice.text = addCommaToPrice(homeDataList[position].price) + "원"
-
 
         var storageUrl = "gs://marketproject-29c48.appspot.com"
         val timeStamp = homeDataList[position].timeStamp
