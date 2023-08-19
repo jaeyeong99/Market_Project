@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     var auth : FirebaseAuth? = null
     var currentUser: FirebaseUser? = null
 
-    val homeDetailFragment = HomeDetailFragment()
+    private val globalHomeDetailFragment = HomeDetailFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,12 +66,10 @@ class MainActivity : AppCompatActivity() {
 
         if (currentUser != null) {
             setFragment("HomeFragment")
-            binding.bottomNavigationView.visibility = View.VISIBLE
-            supportActionBar?.show()
+            showNaviBarAndFloatingBtn()
         } else {
             setFragment("LoginFragment")
-            binding.bottomNavigationView.visibility = View.GONE
-            supportActionBar?.hide()
+            hideNaviBarAndFloatingBtn()
         }
 
         binding.floatingActionButton.setOnClickListener {
@@ -87,56 +85,83 @@ class MainActivity : AppCompatActivity() {
 
 
     fun setFragment(tag: String){
+
         val transaction = supportFragmentManager.beginTransaction()
+//        val fragmentManager = supportFragmentManager
+//        val currentFragment = fragmentManager.primaryNavigationFragment
+//        Log.d(TAG, "currentFragment: $currentFragment")
+//        if (currentFragment != null) {
+//            Log.d(TAG, "Current Fragment: ???")
+//            transaction.hide(currentFragment)
+//        }
+
+
 
         when(tag){
             "LoginFragment"->{
-                transaction.replace(R.id.fragment_container, LoginFragment(), "LoginFragment")
+                transaction.add(R.id.fragment_container, LoginFragment(), "LoginFragment")
                 mainActivity.setBottomNavigationVisibility(View.GONE)
-                supportActionBar?.hide()
+                //supportActionBar?.hide()
             }
             "SignUpFragment"->{
-                transaction.replace(R.id.fragment_container, SignUpFragment(), "SignUpFragment")
+                transaction.add(R.id.fragment_container, LoginFragment(), "SignUpFragment")
+                transaction.addToBackStack(null)
                 mainActivity.setBottomNavigationVisibility(View.GONE)
-                supportActionBar?.hide()
+                //supportActionBar?.hide()
             }
             "HomeFragment"->{
-                transaction.replace(R.id.fragment_container, HomeFragment(), "HomeFragment")
-                binding.floatingActionButton.show()
+                transaction.add(R.id.fragment_container, HomeFragment(), "HomeFragment")
+                transaction.addToBackStack(null)
+                showNaviBarAndFloatingBtn()
+                //binding.floatingActionButton.show()
             }
             "HomeDetailFragment"->{
-                transaction.replace(R.id.fragment_container, homeDetailFragment, "HomeDetailFragment")
-                binding.floatingActionButton.hide()
-                mainActivity.setBottomNavigationVisibility(View.GONE)
+                transaction.add(R.id.fragment_container, globalHomeDetailFragment, "HomeDetailFragment")
+                transaction.addToBackStack(null)
+                hideNaviBarAndFloatingBtn()
+//                binding.floatingActionButton.hide()
+//                mainActivity.setBottomNavigationVisibility(View.GONE)
             }
             "CommunityFragment"->{
-                transaction.replace(R.id.fragment_container, CommunityFragment(), "CommunityFragment")
+                transaction.add(R.id.fragment_container, CommunityFragment(), "CommunityFragment")
+                transaction.addToBackStack(null)
                 binding.floatingActionButton.show()
             }
             "ChattingFragment"->{
-                transaction.replace(R.id.fragment_container, ChattingFragment(), "ChattingFragment")
+                transaction.add(R.id.fragment_container, ChattingFragment(), "ChattingFragment")
+                transaction.addToBackStack(null)
                 binding.floatingActionButton.hide()
             }
             "AccountFragment"->{
-                transaction.replace(R.id.fragment_container, AccountFragment(), "AccountFragment")
+                    transaction.add(R.id.fragment_container, AccountFragment(), "AccountFragment")
+                transaction.addToBackStack(null)
                 binding.floatingActionButton.hide()
             }
             "WriteFragment"->{
-                transaction.replace(R.id.fragment_container, WriteFragment(), "WriteFragment")
-                mainActivity.setBottomNavigationVisibility(View.GONE)
-                binding.floatingActionButton.hide()
+                transaction.add(R.id.fragment_container, WriteFragment(), "WriteFragment")
+                transaction.addToBackStack(null)
+                hideNaviBarAndFloatingBtn()
             }
 
         }
         transaction.commit()
     }
 
-    fun openHomeDetailFragment(bundle: Bundle){
+    fun hideNaviBarAndFloatingBtn() {
+        mainActivity.setBottomNavigationVisibility(View.GONE)
+        binding.floatingActionButton.hide()
+    }
 
-        homeDetailFragment.arguments = bundle
+    fun showNaviBarAndFloatingBtn() {
+        mainActivity.setBottomNavigationVisibility(View.VISIBLE)
+        binding.floatingActionButton.show()
+    }
+
+
+    fun openHomeDetailFragment(bundle: Bundle){
+        globalHomeDetailFragment.arguments = bundle
         Log.d(TAG, "openHomeDetailFragment $bundle")
         setFragment("HomeDetailFragment")
-
     }
 
     fun setBottomNavigationVisibility(visibility: Int) {

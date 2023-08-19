@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.CommunityFragment">
+    tools:context=".fragment.CommunityFragment"
+    android:clickable="true"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"

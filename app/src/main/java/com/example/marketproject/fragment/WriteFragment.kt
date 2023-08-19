@@ -26,6 +26,7 @@ import androidx.fragment.app.viewModels
 import com.example.marketproject.R
 import com.example.marketproject.activity.MainActivity
 import com.example.marketproject.data.HomeData
+import com.example.marketproject.databinding.ActivityMainBinding
 import com.example.marketproject.databinding.FragmentHomeBinding
 import com.example.marketproject.databinding.FragmentWriteBinding
 import com.example.marketproject.viewmodel.HomeViewModel
@@ -42,6 +43,7 @@ class WriteFragment : Fragment() {
     private lateinit var binding: FragmentWriteBinding
     private lateinit var mainActivity: MainActivity
     private lateinit var storage: FirebaseStorage
+    private lateinit var activityMainBinding: ActivityMainBinding
 
     var savedImageUri: Uri? = null
 
@@ -61,8 +63,14 @@ class WriteFragment : Fragment() {
         return binding.root
     }
 
+    override fun onStop() {
+        super.onStop()
+        mainActivity.showNaviBarAndFloatingBtn()
+    }
+
     private fun init(){
         mainActivity = activity as MainActivity
+
     }
 
     private fun clickListener(){
@@ -137,6 +145,7 @@ class WriteFragment : Fragment() {
             binding.imageView.setBackgroundResource(R.drawable.shape_round)
         }
     }
+
 
 
 
