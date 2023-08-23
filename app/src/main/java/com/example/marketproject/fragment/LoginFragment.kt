@@ -40,7 +40,7 @@ class LoginFragment : Fragment() {
             signIn(binding.etEmail.text.toString(), binding.etPassword.text.toString())
         }
         binding.tvSignUp.setOnClickListener {
-            mainActivity.setFragment("SignUpFragment")
+            //mainActivity.setFragment("SignUpFragment")
         }
     }
 
@@ -49,7 +49,7 @@ class LoginFragment : Fragment() {
             mainActivity.auth?.signInWithEmailAndPassword(email, password)
                 ?.addOnCompleteListener(mainActivity) { task ->
                     if (task.isSuccessful) {
-                        mainActivity.setFragment("HomeFragment")
+                        //mainActivity.setFragment("HomeFragment")
                         mainActivity.supportActionBar?.show()
                         mainActivity.handleSuccessLogin()
                         Toast.makeText(

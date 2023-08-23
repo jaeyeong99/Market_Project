@@ -63,14 +63,14 @@ class WriteFragment : Fragment() {
         return binding.root
     }
 
-    override fun onStop() {
-        super.onStop()
-        mainActivity.showNaviBarAndFloatingBtn()
-    }
+//    override fun onStop() {
+//        super.onStop()
+//        mainActivity.showNaviBarAndFloatingBtn()
+//    }
 
     private fun init(){
         mainActivity = activity as MainActivity
-
+        mainActivity.hideNaviBarAndFloatingBtn()
     }
 
     private fun clickListener(){
@@ -92,8 +92,8 @@ class WriteFragment : Fragment() {
             successWrite()
 
 
-            mainActivity.setFragment("HomeFragment")
-
+            //mainActivity.setFragment(HomeFragment(), "HomeFragment")
+            mainActivity.replaceFragment("HomeFragment")
 
 
         }

@@ -53,7 +53,7 @@ class SignUpFragment : Fragment() {
                 ?.addOnCompleteListener(mainActivity) { task ->
                     if (task.isSuccessful) {
                         successSignUp()
-                        mainActivity.setFragment("LoginFragment")
+                        //mainActivity.setFragment("LoginFragment")
                         Toast.makeText(mainActivity, "가입 완료", Toast.LENGTH_SHORT).show()
 
                     } else {

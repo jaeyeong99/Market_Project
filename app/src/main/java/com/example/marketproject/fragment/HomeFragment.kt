@@ -55,7 +55,8 @@ class HomeFragment : Fragment() {
 
     private fun init(){
         mainActivity = activity as MainActivity
-        mainActivity.setBottomNavigationVisibility(View.VISIBLE)
+//        mainActivity.setBottomNavigationVisibility(View.VISIBLE)
+//        mainActivity.binding.floatingActionButton.show()
     }
 
     private fun clickListener(){
