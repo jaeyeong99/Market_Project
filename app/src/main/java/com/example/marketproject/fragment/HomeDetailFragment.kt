@@ -60,13 +60,14 @@ class HomeDetailFragment : Fragment() {
         return binding.root
     }
 
-    override fun onStop() {
-        super.onStop()
-        mainActivity.showNaviBarAndFloatingBtn()
-    }
+//    override fun onStop() {
+//        super.onStop()
+//        mainActivity.showNaviBarAndFloatingBtn()
+//    }
 
     private fun init(){
         mainActivity = activity as MainActivity
+        mainActivity.hideNaviBarAndFloatingBtn()
     }
 
 

@@ -43,7 +43,6 @@ class WriteFragment : Fragment() {
     private lateinit var binding: FragmentWriteBinding
     private lateinit var mainActivity: MainActivity
     private lateinit var storage: FirebaseStorage
-    private lateinit var activityMainBinding: ActivityMainBinding
 
     var savedImageUri: Uri? = null
 
@@ -63,10 +62,6 @@ class WriteFragment : Fragment() {
         return binding.root
     }
 
-//    override fun onStop() {
-//        super.onStop()
-//        mainActivity.showNaviBarAndFloatingBtn()
-//    }
 
     private fun init(){
         mainActivity = activity as MainActivity
@@ -79,22 +74,18 @@ class WriteFragment : Fragment() {
         }
 
         binding.btnCompleted.setOnClickListener {
-
-            val uid = mainActivity.auth?.currentUser?.uid.orEmpty()
-            val title = binding.etTitle.text.toString()
-            val price = binding.etPrice.text.toString()
-            val contents = binding.etDescription.text.toString()
-
+//            val uid = mainActivity.auth?.currentUser?.uid.orEmpty()
+//            val title = binding.etTitle.text.toString()
+//            val price = binding.etPrice.text.toString()
+//            val contents = binding.etDescription.text.toString()
 //            if (title.isNotEmpty() && price.isNotEmpty() && contents.isNotEmpty()) {
 //                viewModel.updateData(HomeData(uid, title, price, contents, savedImageUri))
 //            }
 
             successWrite()
 
-
             //mainActivity.setFragment(HomeFragment(), "HomeFragment")
             mainActivity.replaceFragment("HomeFragment")
-
 
         }
 
@@ -117,15 +108,12 @@ class WriteFragment : Fragment() {
         postInfoMap["timeStamp"] = timeStamp
         currentDB.updateChildren(postInfoMap)
 
-
         storage = FirebaseStorage.getInstance(storageUrl)
         if (savedImageUri != null) {
 
             storage.reference.child("salesPostImage").child("${fileName}")
                 .putFile(savedImageUri!!)
         }
-
-
     }
 
     private fun openGallery() {

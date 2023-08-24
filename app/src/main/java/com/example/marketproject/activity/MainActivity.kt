@@ -42,18 +42,26 @@ class MainActivity : AppCompatActivity() {
     private val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             Log.d(TAG, "handleOnBackPressed : $currentFragment")
-             if (currentFragment == "WriteFragment") {
-                 setFragment(HomeFragment(), "HomeFragment")
-             } else if (currentFragment == "HomeDetailFragment") {
-                 setFragment(HomeFragment(), "HomeFragment")
-             } else {
-                 if (backPressedTime + 2000 > System.currentTimeMillis()) {
-                     finish()
-                 } else {
-                     Toast.makeText(applicationContext, "'뒤로' 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
-                 }
-                 backPressedTime = System.currentTimeMillis()
-             }
+
+            when(currentFragment) {
+                "WriteFragment" -> {
+                    setFragment(HomeFragment(), "HomeFragment")
+                }
+                "HomeDetailFragment" -> {
+                    setFragment(HomeFragment(), "HomeFragment")
+                }
+                "SignUpFragment" -> {
+                    setFragment(LoginFragment(), "LoginFragment")
+                }
+                else -> {
+                    if (backPressedTime + 2000 > System.currentTimeMillis()) {
+                        finish()
+                    } else {
+                        Toast.makeText(applicationContext, "'뒤로' 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                    }
+                    backPressedTime = System.currentTimeMillis()
+                }
+            }
         }
     }
 
@@ -70,6 +78,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         this.onBackPressedDispatcher.addCallback(this, callback)
+
+
 
         binding.bottomNavigationView.run {
             setOnItemSelectedListener {
@@ -94,9 +104,9 @@ class MainActivity : AppCompatActivity() {
         if (currentUser != null) {
             setFragment(HomeFragment(), "HomeFragment")
             Log.d(TAG, "시작")
-            //showNaviBarAndFloatingBtn()
+            showNaviBarAndFloatingBtn()
         } else {
-            //setFragment("LoginFragment")
+            setFragment(LoginFragment(), "LoginFragment")
             hideNaviBarAndFloatingBtn()
         }
 
@@ -113,17 +123,30 @@ class MainActivity : AppCompatActivity() {
 
 
     fun setFragment(fragment: Fragment, tag: String){
-
         val manager: FragmentManager = supportFragmentManager
         val transaction = manager.beginTransaction()
+
+        if (tag == "HomeFragment") {
+            when (currentFragment) {
+                "LoginFragment" -> {
+                    transaction.remove(manager.findFragmentByTag("LoginFragment")!!)
+                }
+                "WriteFragment" -> {
+                    transaction.remove(manager.findFragmentByTag("WriteFragment")!!)
+                }
+                "HomeDetailFragment" -> {
+                    transaction.remove(manager.findFragmentByTag("HomeDetailFragment")!!)
+                }
+            }
+        }
+
+
 
         if (manager.findFragmentByTag(tag) == null) {
             transaction.add(R.id.fragment_container, fragment, tag)
             currentFragment = tag
         } else {
 
-            //val login = manager.findFragmentByTag("LoginFragment")
-            //val signUp = manager.findFragmentByTag("SignUpFragment")
             val home = manager.findFragmentByTag("HomeFragment")
             val community = manager.findFragmentByTag("CommunityFragment")
             val chatting = manager.findFragmentByTag("ChattingFragment")
@@ -144,11 +167,7 @@ class MainActivity : AppCompatActivity() {
 
             if(tag == "HomeFragment") {
                 if (home != null) {
-                    if (currentFragment == "WriteFragment") {
-                        transaction.remove(manager.findFragmentByTag("WriteFragment")!!)
-                    } else if (currentFragment == "HomeDetailFragment") {
-                        transaction.remove(manager.findFragmentByTag("HomeDetailFragment")!!)
-                    }
+
                     transaction.show(home)
                     currentFragment = tag
                     showNaviBarAndFloatingBtn()
@@ -172,8 +191,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-
         transaction.commit()
     }
 
@@ -187,7 +204,6 @@ class MainActivity : AppCompatActivity() {
         binding.floatingActionButton.show()
     }
 
-
     fun openHomeDetailFragment(bundle: Bundle){
         globalHomeDetailFragment.arguments = bundle
         Log.d(TAG, "openHomeDetailFragment $bundle")
@@ -197,7 +213,6 @@ class MainActivity : AppCompatActivity() {
     fun setBottomNavigationVisibility(visibility: Int) {
         binding.bottomNavigationView.visibility = visibility
     }
-
 
     fun handleSuccessLogin() {
         val userUid = auth?.currentUser?.uid.orEmpty() // null일시 빈값으로 변경
@@ -227,10 +242,8 @@ class MainActivity : AppCompatActivity() {
 //            }
             "HomeFragment"->{
                 transaction.replace(R.id.fragment_container, HomeFragment(), "HomeFragment")
-                //transaction.hide(WriteFragment())
                 currentFragment = tag
                 showNaviBarAndFloatingBtn()
-                //binding.floatingActionButton.show()
             }
 //            "HomeDetailFragment"->{
 //                transaction.add(R.id.fragment_container, globalHomeDetailFragment, "HomeDetailFragment")

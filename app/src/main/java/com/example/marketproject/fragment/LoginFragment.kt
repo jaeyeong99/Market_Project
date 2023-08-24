@@ -40,7 +40,7 @@ class LoginFragment : Fragment() {
             signIn(binding.etEmail.text.toString(), binding.etPassword.text.toString())
         }
         binding.tvSignUp.setOnClickListener {
-            //mainActivity.setFragment("SignUpFragment")
+            mainActivity.setFragment(SignUpFragment(), "SignUpFragment")
         }
     }
 
@@ -49,14 +49,17 @@ class LoginFragment : Fragment() {
             mainActivity.auth?.signInWithEmailAndPassword(email, password)
                 ?.addOnCompleteListener(mainActivity) { task ->
                     if (task.isSuccessful) {
-                        //mainActivity.setFragment("HomeFragment")
-                        mainActivity.supportActionBar?.show()
+                        mainActivity.currentFragment = "LoginFragment"
+                        mainActivity.binding.bottomNavigationView.selectedItemId = R.id.item_home_fragment
+                        mainActivity.setFragment(HomeFragment(), "HomeFragment")
+                        mainActivity.showNaviBarAndFloatingBtn()
                         mainActivity.handleSuccessLogin()
                         Toast.makeText(
                             mainActivity, "로그인에 성공 하였습니다.",
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
+                        Log.e(TAG, "Error signing in: ${task.exception}")
                         Toast.makeText(
                             mainActivity, "로그인에 실패 하였습니다.",
                             Toast.LENGTH_SHORT

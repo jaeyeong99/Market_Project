@@ -44,22 +44,21 @@ class SignUpFragment : Fragment() {
         binding.btnSignUp.setOnClickListener {
             createAccount(binding.etEmail.text.toString(), binding.etPassword.text.toString())
         }
-
     }
 
     private fun createAccount(email: String, password: String) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
             mainActivity.auth?.createUserWithEmailAndPassword(email, password)
-                ?.addOnCompleteListener(mainActivity) { task ->
-                    if (task.isSuccessful) {
-                        successSignUp()
-                        //mainActivity.setFragment("LoginFragment")
-                        Toast.makeText(mainActivity, "가입 완료", Toast.LENGTH_SHORT).show()
+            ?.addOnCompleteListener(mainActivity) { task ->
+                if (task.isSuccessful) {
+                    successSignUp()
+                    mainActivity.setFragment(LoginFragment(), "LoginFragment")
+                    Toast.makeText(mainActivity, "가입 완료", Toast.LENGTH_SHORT).show()
 
-                    } else {
-                        Toast.makeText(mainActivity, "가입 실패", Toast.LENGTH_SHORT).show()
-                    }
+                } else {
+                    Toast.makeText(mainActivity, "가입 실패", Toast.LENGTH_SHORT).show()
                 }
+            }
         }
     }
 

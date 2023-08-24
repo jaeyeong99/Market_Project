@@ -33,8 +33,8 @@ class AccountFragment : Fragment() {
     private fun clickListener(){
         binding.btnLogout.setOnClickListener {
             mainActivity.auth?.signOut()
-            //mainActivity.setFragment("LoginFragment")
+            mainActivity.setFragment(LoginFragment(), "LoginFragment")
+            mainActivity.hideNaviBarAndFloatingBtn()
         }
-
     }
 }
