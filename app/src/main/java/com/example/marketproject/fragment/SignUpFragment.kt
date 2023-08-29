@@ -64,10 +64,11 @@ class SignUpFragment : Fragment() {
 
     private fun successSignUp() {
         val userUid = mainActivity.auth?.currentUser?.uid.orEmpty() // null일시 빈값으로 변경
-        val currentDB = Firebase.database.reference.child("Users").child(userUid)
+        val currentDB = Firebase.database.reference.child("users").child(userUid)
         val userInfoMap = mutableMapOf<String,Any>()
         userInfoMap["userId"] = userUid
         userInfoMap["nickName"] = binding.etNickName.text.toString()
+        Log.d(TAG, "successSignUp: ${binding.etNickName.text}")
         currentDB.updateChildren(userInfoMap)
 
     }

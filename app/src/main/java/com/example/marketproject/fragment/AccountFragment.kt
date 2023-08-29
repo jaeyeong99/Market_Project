@@ -28,6 +28,7 @@ class AccountFragment : Fragment() {
 
     private fun init(){
         mainActivity = activity as MainActivity
+        mainActivity.binding.floatingActionButton.hide()
     }
 
     private fun clickListener(){

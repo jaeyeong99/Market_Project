@@ -30,7 +30,21 @@ class HomeDetailFragment : Fragment() {
         binding = FragmentHomeDetailBinding.inflate(layoutInflater)
 
         init()
+        addData()
 
+
+        return binding.root
+    }
+
+
+    private fun init(){
+        mainActivity = activity as MainActivity
+        mainActivity.hideNaviBarAndFloatingBtn()
+    }
+
+
+    private fun addData() {
+        val key = arguments?.getString("key")
         val title = arguments?.getString("title")
         val price = arguments?.getString("price")
         val description = arguments?.getString("description")
@@ -47,27 +61,13 @@ class HomeDetailFragment : Fragment() {
         var storageUrl = "gs://marketproject-29c48.appspot.com"
         val storage: FirebaseStorage = FirebaseStorage.getInstance(storageUrl)
         val storageRef = storage.reference
-        val storagePath = storageRef.child("salesPostImage/$timeStamp")
+        val storagePath = storageRef.child("salesPostImage/$key")
 
         storagePath.downloadUrl.addOnSuccessListener { uri ->
             Glide.with(binding.root.context)
                 .load(uri)
                 .into(binding.ivImage)
         }
-
-
-
-        return binding.root
-    }
-
-//    override fun onStop() {
-//        super.onStop()
-//        mainActivity.showNaviBarAndFloatingBtn()
-//    }
-
-    private fun init(){
-        mainActivity = activity as MainActivity
-        mainActivity.hideNaviBarAndFloatingBtn()
     }
 
 
@@ -114,7 +114,7 @@ class HomeDetailFragment : Fragment() {
         return value
     }
 
-    fun addCommaToPrice(price: String): String {
+    private fun addCommaToPrice(price: String): String {
         val parts = price.split(".")
         val integerPart = parts[0].toIntOrNull() ?: return price  // Return original price if not a valid number
 

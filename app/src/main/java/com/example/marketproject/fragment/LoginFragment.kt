@@ -53,7 +53,7 @@ class LoginFragment : Fragment() {
                         mainActivity.binding.bottomNavigationView.selectedItemId = R.id.item_home_fragment
                         mainActivity.setFragment(HomeFragment(), "HomeFragment")
                         mainActivity.showNaviBarAndFloatingBtn()
-                        mainActivity.handleSuccessLogin()
+                        //mainActivity.handleSuccessLogin()
                         Toast.makeText(
                             mainActivity, "로그인에 성공 하였습니다.",
                             Toast.LENGTH_SHORT

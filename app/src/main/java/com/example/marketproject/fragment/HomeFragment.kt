@@ -64,23 +64,24 @@ class HomeFragment : Fragment() {
             override fun onItemClick(v: View, position: Int) {
 
                 val clickedHomeData = homeDataList[position] // Get the clicked HomeData
-                val databaseRef = database.getReference("salesPost").child(clickedHomeData.timeStamp)
+                val databaseRef = database.getReference("salesPost").child(clickedHomeData.key)
 
                 databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
+                            val key = snapshot.child("key").getValue(String::class.java)!!
+                            val id = snapshot.child("id").getValue(String::class.java)!!
                             val title = snapshot.child("title").getValue(String::class.java)
                             val price = snapshot.child("price").getValue(String::class.java)
                             val description = snapshot.child("description").getValue(String::class.java)
                             val timeStamp = snapshot.child("timeStamp").getValue(String::class.java)
-                            val id = snapshot.child("id").getValue(String::class.java)!!
 
-
-                            val userDatabaseRef = database.getReference("Users").child(id)
+                            val userDatabaseRef = database.getReference("users").child(id)
                             userDatabaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(snapshot: DataSnapshot) {
                                     val nickName = snapshot.child("nickName").getValue(String::class.java)
                                     val bundle = Bundle().apply {
+                                        putString("key", key)
                                         putString("title", title)
                                         putString("price", price)
                                         putString("description", description)
@@ -112,8 +113,8 @@ class HomeFragment : Fragment() {
 
     private fun createLayoutManager(): LinearLayoutManager {
         val manager = LinearLayoutManager(context)
-        manager.reverseLayout = true
-        manager.stackFromEnd = true
+        //manager.reverseLayout = true
+        //manager.stackFromEnd = true
         return manager
     }
 
@@ -126,13 +127,14 @@ class HomeFragment : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (post in snapshot.children){
                     if (snapshot.exists()) {
+                        val key = post.child("key").getValue(String::class.java)!!
                         val id = post.child("id").getValue(String::class.java)!!
                         val title = post.child("title").getValue(String::class.java)!!
                         val price = post.child("price").getValue(String::class.java)!!
                         val description = post.child("description").getValue(String::class.java)!!
                         val timeStamp = post.child("timeStamp").getValue(String::class.java)!!
 
-                        homeDataList.add(HomeData(id, title, price, description, timeStamp))
+                        homeDataList.add(0, HomeData(key, id, title, price, description, timeStamp))
                     }
                 }
 

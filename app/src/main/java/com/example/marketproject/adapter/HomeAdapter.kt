@@ -10,6 +10,7 @@ import com.example.marketproject.data.HomeData
 import com.example.marketproject.databinding.ItemHomeBinding
 import com.example.marketproject.viewholder.HomeViewHolder
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.storage.FirebaseStorage
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -37,12 +38,10 @@ open class HomeAdapter(private val homeDataList: List<HomeData>): RecyclerView.A
     )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         //item click listener
         holder.itemView.setOnClickListener {
             itemClickListener.onItemClick(it, position)
         }
-
 
         //뷰에 데이터 출력
         val binding = (holder as HomeViewHolder).binding
@@ -50,20 +49,23 @@ open class HomeAdapter(private val homeDataList: List<HomeData>): RecyclerView.A
         binding.tvTitle.text = homeDataList[position].title
         binding.tvPrice.text = addCommaToPrice(homeDataList[position].price) + "원"
 
+        val key = homeDataList[position].key
         var storageUrl = "gs://marketproject-29c48.appspot.com"
-        val timeStamp = homeDataList[position].timeStamp
-        val storage: FirebaseStorage = FirebaseStorage.getInstance(storageUrl)
+        val storage = FirebaseStorage.getInstance(storageUrl)
         val storageRef = storage.reference
-        val storagePath = storageRef.child("salesPostImage/$timeStamp")
+        val storagePath = storageRef.child("salesPostImage/$key")
 
         storagePath.downloadUrl.addOnSuccessListener { uri ->
             Glide.with(holder.itemView.context)
                 .load(uri)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .override(200, 200)
+                .centerCrop()
                 .into(binding.ivImage)
         }
 
+        val timeStamp = homeDataList[position].timeStamp
         binding.tvTime.text = calculationTime(dateTimeToMillSec(timeStamp!!))
-
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -109,7 +111,7 @@ open class HomeAdapter(private val homeDataList: List<HomeData>): RecyclerView.A
         return value
     }
 
-    fun addCommaToPrice(price: String): String {
+    private fun addCommaToPrice(price: String): String {
         val parts = price.split(".")
         val integerPart = parts[0].toIntOrNull() ?: return price  // Return original price if not a valid number
 

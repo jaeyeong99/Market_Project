@@ -140,7 +140,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
+        if (tag == "LoginFragment") {
+            if (currentFragment == "SignUpFragment") {
+                transaction.remove(manager.findFragmentByTag("SignUpFragment")!!)
+            }
+        }
 
         if (manager.findFragmentByTag(tag) == null) {
             transaction.add(R.id.fragment_container, fragment, tag)
@@ -214,15 +218,15 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.visibility = visibility
     }
 
-    fun handleSuccessLogin() {
-        val userUid = auth?.currentUser?.uid.orEmpty() // null일시 빈값으로 변경
-        val currentDB = Firebase.database.reference.child("Users").child(userUid)
-        val userInfoMap = mutableMapOf<String,Any>()
-        userInfoMap["userId"] = userUid
-        userInfoMap["nickName"] = "nickname"
-        currentDB.updateChildren(userInfoMap)
-
-    }
+//    fun handleSuccessLogin() {
+//        val userUid = auth?.currentUser?.uid.orEmpty() // null일시 빈값으로 변경
+//        val currentDB = Firebase.database.reference.child("Users").child(userUid)
+//        val userInfoMap = mutableMapOf<String,Any>()
+//        userInfoMap["userId"] = userUid
+//        userInfoMap["nickName"] = "nickname"
+//        currentDB.updateChildren(userInfoMap)
+//
+//    }
 
     fun replaceFragment(tag: String) {
 

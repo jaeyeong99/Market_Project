@@ -12,7 +12,7 @@ class HomeViewModel : ViewModel() {
     fun getData(): MutableList<HomeData> = homeData
 
     fun updateData(data: HomeData) {
-        homeData.add(HomeData(data.id, data.title, data.price, data.description, data.timeStamp))
+        homeData.add(HomeData(data.key, data.id, data.title, data.price, data.description, data.timeStamp))
     }
 
 

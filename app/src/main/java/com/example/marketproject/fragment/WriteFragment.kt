@@ -74,13 +74,7 @@ class WriteFragment : Fragment() {
         }
 
         binding.btnCompleted.setOnClickListener {
-//            val uid = mainActivity.auth?.currentUser?.uid.orEmpty()
-//            val title = binding.etTitle.text.toString()
-//            val price = binding.etPrice.text.toString()
-//            val contents = binding.etDescription.text.toString()
-//            if (title.isNotEmpty() && price.isNotEmpty() && contents.isNotEmpty()) {
-//                viewModel.updateData(HomeData(uid, title, price, contents, savedImageUri))
-//            }
+
 
             successWrite()
 
@@ -92,26 +86,35 @@ class WriteFragment : Fragment() {
     }
 
     private fun successWrite() {
-        var storageUrl = "gs://marketproject-29c48.appspot.com"
-        var fileName = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
-        val userId = mainActivity.auth?.currentUser?.uid.orEmpty() // null일시 빈값으로 변경
-        val currentDB = Firebase.database.reference.child("salesPost").child(fileName)
+        val database = Firebase.database
+        val postsRef = database.reference.child("salesPost")
+        val newChildReference = postsRef.push()
+        val postInfoMap = mutableMapOf<String, Any>()
+
+
+        val key = newChildReference.toString().replaceFirst("$postsRef/", "")
+        //val key = newChildReference.toString()
+        val id = mainActivity.auth?.currentUser?.uid.orEmpty()
         val title = binding.etTitle.text.toString()
         val price = binding.etPrice.text.toString()
         val description = binding.etDescription.text.toString()
-        val timeStamp = fileName
-        val postInfoMap = mutableMapOf<String,Any>()
-        postInfoMap["id"] = userId
+        val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
+
+        postInfoMap["key"] = key
+        postInfoMap["id"] = id
         postInfoMap["title"] = title
         postInfoMap["price"] = price
         postInfoMap["description"] = description
         postInfoMap["timeStamp"] = timeStamp
-        currentDB.updateChildren(postInfoMap)
 
+
+        newChildReference.setValue(postInfoMap)
+
+        var storageUrl = "gs://marketproject-29c48.appspot.com"
         storage = FirebaseStorage.getInstance(storageUrl)
         if (savedImageUri != null) {
 
-            storage.reference.child("salesPostImage").child("${fileName}")
+            storage.reference.child("salesPostImage").child("$key")
                 .putFile(savedImageUri!!)
         }
     }
