@@ -29,5 +29,4 @@ class ChattingFragment : Fragment() {
         mainActivity = activity as MainActivity
         mainActivity.binding.floatingActionButton.hide()
     }
-
 }

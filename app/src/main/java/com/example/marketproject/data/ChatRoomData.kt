@@ -1,7 +1,7 @@
 package com.example.marketproject.data
 
 
-data class ChatData (
+data class ChatRoomData (
     val key: String,
     val id: String,
     val message : String,
