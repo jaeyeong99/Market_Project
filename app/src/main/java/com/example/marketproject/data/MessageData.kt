@@ -1,11 +1,10 @@
 package com.example.marketproject.data
 
-import java.sql.Timestamp
 
-
-data class ChatMessageData (
+data class MessageData (
     val sender: String,
     val message: String,
+    val read: Boolean,
     val timestamp: Long
 )
 

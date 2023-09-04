@@ -1,6 +1,8 @@
 package com.example.marketproject.fragment
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,12 +23,21 @@ class ChattingFragment : Fragment() {
         binding = FragmentChattingBinding.inflate(layoutInflater)
 
         init()
+        clickListener()
+        Log.d(TAG, "messageclick")
 
-        return inflater.inflate(R.layout.fragment_chatting, container, false)
+        return binding.root
     }
 
     private fun init(){
         mainActivity = activity as MainActivity
         mainActivity.binding.floatingActionButton.hide()
+    }
+
+    private fun clickListener(){
+        binding.tvTitle.setOnClickListener {
+            mainActivity.setFragment(ChattingDetailFragment(), "ChattingDetailFragment")
+            mainActivity.hideNaviBarAndFloatingBtn()
+        }
     }
 }

@@ -2,9 +2,10 @@ package com.example.marketproject.data
 
 
 data class ChatRoomData (
-    val key: String,
-    val id: String,
-    val message : String,
+    val sellerId: String,
+    val buyerId: String,
+    val product: String,
+    val lastMessage : String,
     val timeStamp : String
 )
 

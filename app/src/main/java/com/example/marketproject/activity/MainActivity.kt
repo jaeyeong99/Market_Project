@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     var currentUser: FirebaseUser? = null
 
     private val globalHomeDetailFragment = HomeDetailFragment()
+    private val globalChattingDetailFragment = ChattingDetailFragment()
 
     var currentFragment : String? = null
     var backPressedTime : Long = 0
@@ -212,6 +213,12 @@ class MainActivity : AppCompatActivity() {
         globalHomeDetailFragment.arguments = bundle
         Log.d(TAG, "openHomeDetailFragment $bundle")
         setFragment(globalHomeDetailFragment, "HomeDetailFragment")
+    }
+
+    fun openChattingDetailFragment(bundle: Bundle){
+        globalChattingDetailFragment.arguments = bundle
+        Log.d(TAG, "openChattingDetailFragment $bundle")
+        setFragment(globalChattingDetailFragment, "ChattingDetailFragment")
     }
 
     fun setBottomNavigationVisibility(visibility: Int) {

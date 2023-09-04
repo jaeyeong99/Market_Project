@@ -87,6 +87,7 @@ class HomeFragment : Fragment() {
                                         putString("description", description)
                                         putString("timeStamp", timeStamp)
                                         putString("nickName", nickName)
+                                        putString("id", id)
                                     }
 
                                     mainActivity.openHomeDetailFragment(bundle)

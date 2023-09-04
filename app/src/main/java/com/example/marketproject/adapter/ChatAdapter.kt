@@ -1,24 +1,14 @@
 package com.example.marketproject.adapter
 
-import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.marketproject.data.HomeData
+import com.example.marketproject.data.ChatRoomData
 import com.example.marketproject.databinding.ItemHomeBinding
 import com.example.marketproject.viewholder.HomeViewHolder
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.marketproject.data.ChatMessageData
-import com.google.firebase.storage.FirebaseStorage
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.*
-import java.util.concurrent.TimeUnit.*
+import com.example.marketproject.data.MessageData
 
-open class ChatAdapter(private val chatDataList: List<ChatMessageData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+open class ChatAdapter(private val chatDataList: List<ChatRoomData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     override fun getItemCount(): Int {

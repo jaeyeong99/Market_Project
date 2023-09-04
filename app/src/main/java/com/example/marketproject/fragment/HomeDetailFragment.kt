@@ -1,6 +1,7 @@
 package com.example.marketproject.fragment
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -23,6 +24,8 @@ class HomeDetailFragment : Fragment() {
     private lateinit var binding: FragmentHomeDetailBinding
     private lateinit var mainActivity : MainActivity
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,6 +34,8 @@ class HomeDetailFragment : Fragment() {
 
         init()
         addData()
+        clickListener()
+
 
 
         return binding.root
@@ -42,6 +47,25 @@ class HomeDetailFragment : Fragment() {
         mainActivity.hideNaviBarAndFloatingBtn()
     }
 
+    private fun clickListener(){
+        binding.btnChat.setOnClickListener {
+            val key = arguments?.getString("key")
+            val title = arguments?.getString("title")
+            val price = arguments?.getString("price")
+            val nickName = arguments?.getString("nickName")
+            val id = arguments?.getString("id")
+            //mainActivity.setFragment(ChattingDetailFragment(), "ChattingDetailFragment")
+            mainActivity.hideNaviBarAndFloatingBtn()
+            val bundle = Bundle().apply {
+                putString("title", title)
+                putString("price", price)
+                putString("nickName", nickName)
+                putString("id", id)
+                putString("key", key)
+            }
+            mainActivity.openChattingDetailFragment(bundle)
+        }
+    }
 
     private fun addData() {
         val key = arguments?.getString("key")
@@ -50,6 +74,7 @@ class HomeDetailFragment : Fragment() {
         val description = arguments?.getString("description")
         val timeStamp = arguments?.getString("timeStamp")
         val nickName = arguments?.getString("nickName")
+        val id = arguments?.getString("id")
 
 
         binding.tvTitle.text = title
