@@ -5,7 +5,7 @@ data class MessageData (
     val sender: String,
     val message: String,
     val read: Boolean,
-    val timestamp: Long
+    val timeStamp: Long
 )
 
 //user

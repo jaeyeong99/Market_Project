@@ -35,7 +35,7 @@ open class MessageAdapter(private val messageDataList: List<MessageData>): Recyc
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as MessageViewHolder).binding
         binding.tvMessage.text = messageDataList[position].message
-        binding.tvTime.text = convertTimestampToHHmm(messageDataList[position].timestamp)
+        binding.tvTime.text = convertTimestampToHHmm(messageDataList[position].timeStamp)
 
         if (!messageDataList[position].read) {
             binding.tvRead.text = "1"

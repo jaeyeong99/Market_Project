@@ -7,14 +7,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.marketproject.R
 import com.example.marketproject.activity.MainActivity
+import com.example.marketproject.adapter.ChatRoomAdapter
+import com.example.marketproject.data.ChatRoomData
 import com.example.marketproject.databinding.FragmentChattingBinding
 
 class ChattingFragment : Fragment() {
 
     private lateinit var binding: FragmentChattingBinding
     private lateinit var mainActivity: MainActivity
+
+    private val chatRoomList = mutableListOf<ChatRoomData>()
+    lateinit var chatRoomAdapter: ChatRoomAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,8 +29,8 @@ class ChattingFragment : Fragment() {
         binding = FragmentChattingBinding.inflate(layoutInflater)
 
         init()
+        setAdapter()
         clickListener()
-        Log.d(TAG, "messageclick")
 
         return binding.root
     }
@@ -34,10 +40,23 @@ class ChattingFragment : Fragment() {
         mainActivity.binding.floatingActionButton.hide()
     }
 
+    private fun setAdapter() {
+        chatRoomAdapter = ChatRoomAdapter(chatRoomList)
+        binding.chatRoomRecyclerView.adapter = chatRoomAdapter
+        binding.chatRoomRecyclerView.layoutManager = createLayoutManager()
+    }
+
+    private fun createLayoutManager(): LinearLayoutManager {
+        val manager = LinearLayoutManager(context)
+        manager.reverseLayout = true
+        manager.stackFromEnd = true
+        return manager
+    }
+
     private fun clickListener(){
-        binding.tvTitle.setOnClickListener {
-            mainActivity.setFragment(ChattingDetailFragment(), "ChattingDetailFragment")
-            mainActivity.hideNaviBarAndFloatingBtn()
-        }
+//        binding.tvTitle.setOnClickListener {
+//            mainActivity.setFragment(ChattingDetailFragment(), "ChattingDetailFragment")
+//            mainActivity.hideNaviBarAndFloatingBtn()
+//        }
     }
 }

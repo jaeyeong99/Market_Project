@@ -36,8 +36,6 @@ class HomeDetailFragment : Fragment() {
         addData()
         clickListener()
 
-
-
         return binding.root
     }
 
@@ -53,16 +51,19 @@ class HomeDetailFragment : Fragment() {
             val title = arguments?.getString("title")
             val price = arguments?.getString("price")
             val nickName = arguments?.getString("nickName")
+            val timeStamp = arguments?.getString("timeStamp")
             val id = arguments?.getString("id")
-            //mainActivity.setFragment(ChattingDetailFragment(), "ChattingDetailFragment")
-            mainActivity.hideNaviBarAndFloatingBtn()
+
             val bundle = Bundle().apply {
+                putString("key", key)
                 putString("title", title)
                 putString("price", price)
                 putString("nickName", nickName)
+                putString("timeStamp", timeStamp)
                 putString("id", id)
-                putString("key", key)
+
             }
+            mainActivity.hideNaviBarAndFloatingBtn()
             mainActivity.openChattingDetailFragment(bundle)
         }
     }
@@ -74,8 +75,6 @@ class HomeDetailFragment : Fragment() {
         val description = arguments?.getString("description")
         val timeStamp = arguments?.getString("timeStamp")
         val nickName = arguments?.getString("nickName")
-        val id = arguments?.getString("id")
-
 
         binding.tvTitle.text = title
         binding.tvPrice.text = price?.let { addCommaToPrice(it) } + "원"
@@ -94,6 +93,7 @@ class HomeDetailFragment : Fragment() {
                 .into(binding.ivImage)
         }
     }
+
 
 
     @SuppressLint("SimpleDateFormat")

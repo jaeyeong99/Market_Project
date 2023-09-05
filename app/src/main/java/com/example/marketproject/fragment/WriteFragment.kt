@@ -77,7 +77,6 @@ class WriteFragment : Fragment() {
 
 
             successWrite()
-
             //mainActivity.setFragment(HomeFragment(), "HomeFragment")
             mainActivity.replaceFragment("HomeFragment")
 

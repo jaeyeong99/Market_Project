@@ -4,7 +4,6 @@ package com.example.marketproject.data
 data class ChatRoomData (
     val sellerId: String,
     val buyerId: String,
-    val product: String,
     val lastMessage : String,
     val timeStamp : String
 )
